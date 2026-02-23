@@ -1,0 +1,59 @@
+---
+title: "Lab 01 Stat 240"
+subtitle: "Due: 27/01/2026"
+author: "Peter Khrissanov"
+format: html
+---
+
+
+
+# Problem 1
+
+## Part a)
+
+
+```{r}
+a <- 301611434
+a
+a <- a %% 9 
+a <- a + 1
+a
+
+```
+
+## Part b)
+
+
+
+
+```{r}
+library(readxl)
+a <- read_excel("6/Raisin_Dataset.xlsx")
+data <- read_excel("6/Raisin_Dataset.xlsx")
+
+
+men <- mean(data$MajorAxisLength)
+med <- median(data$MajorAxisLength)
+standdev <- sd(data$MajorAxisLength)
+minnum <- min(data$MajorAxisLength)
+maxnum <- max(data$MajorAxisLength)
+sum <- c(men, med, standdev, minnum, maxnum)
+
+round(sum, digits = 3)
+
+```
+
+
+## Part c)
+For problem 1, I simply computed the number that is necessary. 
+For problem 2 I learned how to read a xlslc file with the import dataset button.
+afterwards, i computed all of the necessary values, and loaded it into a vector. Finally, 
+I used the round function to output the correct format of the values. 
+
+Analyzed : MajorAxisLength
+
+
+
+
+
+

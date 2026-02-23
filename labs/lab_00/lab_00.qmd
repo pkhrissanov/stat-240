@@ -1,0 +1,128 @@
+---
+title: "Stat 240: Lab 00"
+subtitle: "Due January 20th 5:00 PM PST"
+author: "Peter Khrissanov"
+date: "January 16 2026"
+format: html
+---
+
+This introductory lab is to ensure you have the computing environment
+required for the rest of the semester set up. If you have taken
+a previous class involving computing in R much of this will be
+familiar. If not, this should still be straightforward.
+
+<!-- This lab will be graded however you should submit it to crowdmark, -->
+<!-- to ensure you are familiar with the submission process for future -->
+<!-- problem sets. -->
+This lab will be graded out of 1 point, to ensure you are familiar with 
+the submission process for future problem sets.
+
+
+# Problem 1
+
+- To complete the lab you will need to ensure you have installed 
+R and RStudio. See the installation instructions in the files section
+of Canvas.
+
+# Problem 2
+
+- Next you should go to the `lab_00` folder in canvas and download
+this file `lab_00.qmd`. __Save this file somewhere specific on your 
+computer__. For example, create a folder for stat 240 and save it there.
+
+We will talk a lot more about saving and organiizing files 
+in future weeks, but this is just a very quick way to get started.
+(If you know what an RStudio project is you can set one up for the class
+before you do this. If not we will discuss it soon.)
+
+Now open this file you have saved in RStudio.
+You will see little grayed out chunks corresponding to code, for example.
+
+```{r}
+num_1 <- 101
+num_2 <- 303
+
+num_1 + num_2
+```
+
+If you press the green play button this code will run and show you the
+result.
+You can create these code chunks with the 
+shortcut `Cmd/Ctrl + Option/Alt + i`.
+
+## __To Do__. Create a code chunk and do a small simple calculation here.
+
+```{r}
+word1 <- 3
+word2 <- 2
+  
+word1+word2
+```
+
+
+
+
+
+# Problem 3
+
+Now we will see how to read in a simple data file into R, as seen
+in the first class.
+From canvas download `lab_00_data.csv` and __save it in the same folder
+as the qmd file you previously downloaded__.
+
+You should then be able to run the following code, which will read
+this data into R and show you the first 6 rows of data.
+
+```{r}
+data <- read.csv("lab_00_data.csv")
+head(data)
+```
+
+
+# Problem 4
+
+Finally, we will create a very simple plot using this data, by running
+the following code. You will need to have read the data in in the 
+previous step for this code to run!
+
+```{r}
+plot(data$x, data$y)
+```
+
+# Problem 5
+
+## To Do. Now create a pdf of your version of this document.
+
+To do this you should:
+
+- Modify the author section above, adding your name
+- Render the quarto document, using the Render button at the top of
+the document.
+
+Then, this will `Render` the document,
+creating a file with the same name but now with the `html` extension.
+It will also open in the `Viewer` tab beside files, where you can see what
+it looks like.
+
+You can also open this `html` file by clicking on it, and opening it with your
+web browser.
+
+When you render a file, code written inside a code chunk will be run
+and the output will be placed in the file created. This 
+also means that if you write code which does not run 
+properly, it will cause an error and RStudio will
+not be able to knit your file.
+
+<!-- # Saving Files for Submission -->
+
+This is almost in the format we want to submit, except we need to
+convert it to `pdf`. To do this, when it is open in the browser
+you should `Print it to PDF`, saving it with the correct name.
+
+This pdf is the file
+you should then submit to crowdmark for both labs and computer based
+exams in this course.
+This lab is to ensure you have this set up correctly
+for the rest of the semester!
+
+

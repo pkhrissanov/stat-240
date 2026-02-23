@@ -1,0 +1,105 @@
+---
+title: "Lab 03 "
+subtitle: "Due Feb 7 5:00 PM PST"
+author: "Peter Khrissanov"
+format: html
+---
+
+
+
+# Problem 1: Hazardous waste
+
+
+
+**(2 points)**
+
+```{r}
+## write answer here
+library(RSQLite)
+data <- read.csv("incinerated.new")
+db <- dbConnect(SQLite(), dbname = "combined.sqlite")
+dbWriteTable(
+  conn = db,
+  name = "incin",
+  value = data[1:4, ],
+  row.names = FALSE,
+  overwrite = TRUE
+)
+
+head(dbReadTable(db, "incin"))
+```
+
+## Part b)
+
+
+**(2 points)**
+
+```{r}
+## write answer here
+data_insert <- tail(data, n = 3)
+
+for(i in 5:7){
+query <- paste0("INSERT INTO incin VALUES ('",
+            data$Country[i], "', ", data$Year[i],
+            ", ", data$Value[i],
+            "", ")")
+            
+  dbExecute(db, query)
+}
+incin_data <- dbReadTable(db, "incin")
+  tail(incin_data, 3)
+  
+
+
+
+
+```
+
+
+## Part c)
+
+
+
+**(4 points)**
+
+
+```{r}
+
+gen  <- read.csv("generated.new")
+inc  <- read.csv("incinerated.new")
+land <- read.csv("landfilled.new")
+rec  <- read.csv("recycled.new")
+
+
+for (i in seq_len(nrow(gen))) {
+  query <- paste0(
+    "INSERT INTO lab03combined (Country, Year, Generated, Incinerated, Landfilled, Recycled) VALUES ('",
+    gen$Country[i], "', ",
+    gen$Year[i], ", ",
+    gen$Value[i], ", ",
+    inc$Value[i], ", ",
+    land$Value[i], ", ",
+    rec$Value[i],
+    ")"
+  )
+  dbExecute(db, query)
+}
+
+```
+
+
+
+## Part d)
+
+
+**(2 points)**
+
+```{r}
+
+combined_df <- dbReadTable(db, "lab03combined")
+tail(combined_df, 7)
+
+```
+
+## Part e) (Optional Bonus)
+

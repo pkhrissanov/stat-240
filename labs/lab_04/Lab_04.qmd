@@ -1,0 +1,130 @@
+---
+title: "Lab 04"
+subtitle: "Due Feb 18 5:00 PM PST"
+author: "Peter Khrissanov"
+format: html
+---
+
+
+Modify this template file to create your submission.
+
+# Problem 1a
+
+
+```{r}
+my_lm <- function(x, y) {
+  
+  x_mean <- mean(x)
+  y_mean <- mean(y)
+  
+  a <- sum((x - x_mean) * (y - y_mean)) / sum((x - x_mean)^2)
+  
+  b <- y_mean - a * x_mean
+
+  return(list(a = a, b = b))
+  
+}
+
+```
+
+
+## Problem 1b
+
+
+```{r}
+## write answer here
+
+x_vec <- c(3, 0, 1)
+y_vec <- c(4, 3, 4)
+
+my_lm(x_vec, y_vec)
+
+model <- lm(y ~ x, data = data.frame(x = x_vec, y = y_vec))
+alpha <- summary(model)$coefficients[2, 1]
+beta <- summary(model)$coefficients[1, 1]
+
+alpha
+beta
+
+```
+
+
+## Problem 2a
+
+
+
+```{r}
+## write answer here
+
+library(RSQLite)
+library(DBI)
+
+db <- dbConnect(SQLite(), dbname = "xcoretail.sqlite")
+
+
+
+
+month_price <- dbGetQuery(db, "SELECT UnitPrice FROM prices WHERE StockCode == 71053")
+price <- month_price[1,1]
+price
+
+
+months <- c("2011-01", "2011-02", "2011-03", "2011-04", "2011-05", "2011-06", "2011-07", "2011-08")
+month_count <- numeric(8)
+
+for (i in 1:8){
+  query <- sqlInterpolate(db, "SELECT SUM(Quantity) FROM sales WHERE StockCode = 71053 AND InvoiceDate LIKE ?month", month = paste0(months[i], "%"))
+  month_count[i] <- dbGetQuery(db, query)[1, 1]
+}
+month_count
+  
+  
+month_rev <- month_count * price
+
+
+plot(1:8, month_rev,
+     main = "71053 Rev",
+     ylab = "Revenue",
+     xlab = "Month",
+     pch = 19,
+     ylim = c(0, max(month_rev) * 1.1 ) )
+
+
+
+
+
+
+```
+
+
+
+## Problem 2b
+
+
+```{r}
+## write answer here
+
+months <- c("2011-01", "2011-02", "2011-03", "2011-04", "2011-05", "2011-06", "2011-07", "2011-08")
+tot_month_rev <- numeric(8)
+
+for(i in seq_along(months)){
+  
+  query <- sqlInterpolate(db, "SELECT SUM(s.Quantity * p.UnitPrice) AS Revenue FROM Sales s JOIN prices p ON s.StockCode = p.StockCode WHERE s.InvoiceDate LIKE ?month", month = paste0(months[i], "%"))
+  tot_month_rev[i] <- dbGetQuery(db, query)[1,1]
+}
+tot_month_rev
+                                            
+  
+  
+plot(1:8, tot_month_rev,
+     main = "Montly Rev",
+     ylab = "Revenue",
+     xlab = "Month",
+     pch = 19,
+     ylim = c(0, max(tot_month_rev) * 1.1 ) )
+
+
+
+```
+
+

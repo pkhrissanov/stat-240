@@ -1,0 +1,95 @@
+---
+title: "Lab Template Stat 240"
+subtitle: "Lab 02"
+author: "Peter Khrissanov"
+format: html
+---
+
+# Problem 1
+
+## Part a)
+
+
+```{r}
+median_func <- function(vector){
+  
+  sorted <- sort(vector)
+  len <- length(sorted)
+  if(len %% 2 == 0){
+    num1 <- sorted[(len/ 2)+1]
+    num2 <- sorted[len / 2 ]
+    return ((num1+num2) / 2)
+
+  }
+  {
+      val <- sorted[(len/2)+1]
+      return (val)
+  }
+  
+}
+
+median_func(c(1,2,3,4, 5))
+
+
+
+```
+
+## Part b)
+
+
+
+
+```{r}
+## write answer here
+a <- (301611434 %% 27) + 1
+library(readr)
+library(tidyverse)
+data <- read_tsv("AS-N100.tsv")
+symbols <- sort(unique(data$ticker))[a]
+
+worked <- filter(data, ticker == symbols)
+count <- c(worked$open)
+
+median_func(count)
+
+
+
+```
+
+
+
+```{r}
+
+
+library(rjson)
+library(imager)
+libraries <- fromJSON(file = "libraries.json")
+image <- load.image("Figure03.png")
+
+
+b <- (301611434 %% 21) + 1
+
+cords <- libraries[["features"]][[b]][["geometry"]]$coordinates
+lib <- libraries[["features"]][[b]][["properties"]]$maptip
+
+lat_top <- 49.410705
+lon_left <- -124.217671
+lat_bottom <- 47.929083
+lon_right <- -121.994887
+
+lat <- cords[2]
+lon <- cords[1]
+
+W <- width(image)
+H <- height(image)
+
+
+x <- (lon - lon_left) / (lon_right - lon_left) * (W - 1 ) + 1
+y <- (lat - y_ul) / (y_rl - y_ul) * (H - 1) + 1
+plot(image, axes + FALSE)
+points(x,y, col = "red", pch = 4, lwd = 5)
+text(x, y + 18, lib, col="red", cex = 0.8)
+
+```
+
+
