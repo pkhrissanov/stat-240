@@ -36,4 +36,22 @@ query <- sqlInterpolate(db, "SELECT SUM(Quantity) FROM sales
 )
 
 request <- dbSendQuery(db, query)
+
+a <- 2      # intercept
+b  <- 0.5    # slope
+
+x <- c(0, 1, 2, 3, 4, 5)
+
+y <- c(2.1, 2.4, 3.2, 3.9, 4.1, 4.8)
+
+
+#sum of least squares. 
+SSE <- function(alpha, beta, x, y){
+  sum((y - (alpha + beta * x))^2)
+}
+
+SSE(a, b, x, y)
+
+SSE(a, b, x, y)
+
 ...
