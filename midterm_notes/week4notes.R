@@ -94,3 +94,7 @@ head(dbFetch(request_avg))
 
 
 
+
+
+
+
