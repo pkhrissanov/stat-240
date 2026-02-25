@@ -78,6 +78,22 @@ dbWriteTable(conn = db, name = "BIIB", value = sub, overwrite = TRUE)
 
 
 
+```
+
+
+
+
+```{r}
+
+db <- dbConnect(SQLite(), "database.sqlite")
+
+# query
+result <- dbGetQuery(db,"SELECT StockCode, Quantity, UnitPrice FROM sales")
+
+
+
+
+
 
 
 

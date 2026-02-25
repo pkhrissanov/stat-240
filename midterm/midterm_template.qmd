@@ -1,0 +1,56 @@
+---
+title: "Stat 240 Midterm"
+subtitle: "February 2026"
+author: "Your Name and Student Number Here"
+format: html
+date: now
+---
+
+
+```{r}
+library(RSQLite)
+library(DBI)
+```
+
+
+## Problem 1
+
+```{r}
+## write code here
+```
+
+
+## Problem 2
+
+
+```{r}
+## write code here
+```
+
+
+
+## Problem 3 (Delete if not used)
+
+
+```{r}
+## write code here
+```
+
+
+
+## Problem 4 (Delete if not used)
+
+
+
+```{r}
+## write code here
+```
+
+
+## Problem 5 (Delete if not used)
+
+
+```{r}
+## write code here
+```
+
