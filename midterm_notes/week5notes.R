@@ -103,6 +103,27 @@ alpha
 
 
 
+# Optim function  ---------------------------------------------------------
+#optim function basically find the best fit line given a dataframe 
+
+
+xs <- c(1, 2, 3)
+ys <- c(73, 42, 55)
+
+SSE <- function(pars = c(0, 0), x, y) {
+  alpha <- pars[1]
+  beta <- pars[2]
+  f_x <- alpha + beta * x
+  SSE <- sum((y - f_x)^2)
+  SSE
+}
+
+est_fit <- optim(par = c(0, 0), SSE, x = xs, y = ys)
+est_fit$par
+est_fit$coefficients
+
+
+
 
 
 

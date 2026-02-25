@@ -3,3 +3,89 @@ title: "midtermsample"
 format: html
 ---
 
+```{r}
+data <- read.csv(file = "NASDAQ.tsv", sep = "\t")
+write.table(data[, -1], file = "NASDAQ.dsv", sep = "\t")
+```
+
+
+
+
+
+```{r}
+data <- read.csv(file = "NASDAQ.tsv", sep = "\t")
+
+sub <- data[data$ticker == "BIIB", ]
+
+mean(sub$open)
+sd(sub$open)
+
+dim(sub)
+
+xi <- c(1:388)
+yi <- c(1:388)
+
+for(i in 1:388){
+  yi[i] <- sub$open[i]
+
+}
+model <- lm(y ~ x, data = data.frame(x = xi, y = yi))
+alpha <- summary(model)$coefficients[1, 1]
+beta <- summary(model)$coefficients[2, 1]
+alpha
+beta
+
+
+sub
+
+
+sort(sub, decreasing = FALSE, )
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+
+library(RSQLite)
+db <- dbConnect(SQLite(), dbname = "NASDAQ.sqlite")
+dbWriteTable(conn = db, name = "BIIB", value = sub, overwrite = TRUE)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
