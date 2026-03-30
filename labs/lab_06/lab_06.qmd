@@ -1,0 +1,106 @@
+---
+title: "Lab 06"
+subtitle: "Due March 15, 5:00 PM PST"
+author: "Peter Khrissanov 301611434"
+format: html
+---
+
+```{r}
+library(carData)
+data <- data("Prestige")
+prestige_data <- Prestige[, c("education", "income")]
+```
+
+
+Modify this template file to create your submission.
+
+# Problem 1a
+
+
+```{r}
+## write your answer here
+set.seed(100)
+prop_train <- 0.75
+prop_test <- 1 - prop_train
+
+n_data <- nrow(prestige_data)
+
+train_test <- sample(c("Train", "Test"),
+                     size = n_data, replace = TRUE, 
+                     prob = c(prop_train, prop_test))
+
+train_data <- prestige_data[train_test == "Train", ]
+test_data <- prestige_data[train_test == "Test",]
+
+
+
+```
+
+
+## Problem 1b
+
+
+```{r}
+## write answer here
+
+x <- train_data$education
+y <- train_data$income
+fit <- lm(y ~ x)
+fit
+est_Y <- predict(fit, newdata = test_data)
+RMSPE <- sqrt( mean( (est_Y - test_data$income) ^2) )
+RMSPE
+
+
+```
+
+
+## Problem 1c
+
+
+
+```{r}
+## write answer here
+library(caret)
+
+
+set.seed(100)
+K_vals <- seq(from = 1, to = 50, by = 1)
+K_RMSPE <- rep(NA, length(K_vals))
+
+
+CV_folds <- sample(1:5, size = nrow(train_data), replace = TRUE)
+num_folds <- 5
+
+for(j in 1:length(K_vals)) {
+  k <- K_vals[j]
+  CV_RMSPE <- rep(NA, num_folds)
+  
+  for(i in 1:num_folds){
+    cv_train <- train_data[CV_folds != i, ]
+    cv_val <- train_data[CV_folds == i, ]
+    
+    fit_knn <- knnreg(income ~ education, data = cv_train, k = k)
+    cv_pred <- predict(fit_knn, cv_val)
+    
+    CV_RMSPE[i] <- sqrt(mean(((cv_pred - cv_val$income))^2))
+  }
+  
+  K_RMSPE[j] <- mean(CV_RMSPE)
+}
+
+best_k <- K_vals[which.min(K_RMSPE)]
+best_k
+```
+
+
+## Problem 1d
+
+```{r}
+## write your answer here
+
+fit_knn <- knnreg(income ~ education, data = train_data, k = best_k)
+pred <- predict(fit_knn, test_data)
+sqrt(mean((pred - test_data$income)^2))
+```
+

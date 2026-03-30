@@ -1,0 +1,84 @@
+---
+title: "Lab 08"
+subtitle: "Due March 24, 5:00 PM PST"
+author: "Peter Khrissanov 301611434"
+format: html
+---
+
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(janeaustenr)
+book_words <- austen_books() |>
+unnest_tokens(word, text)
+```
+
+# Problem 1a
+
+
+```{r}
+SandS <- book_words |> filter(book == "Sense & Sensibility")
+allword <- dim(unique(SandS))[1]
+Tenchar <- SandS |> filter(str_length(word)>= 10)
+bigword <- dim(unique(Tenchar[2]))[1]
+proportion <- (bigword/allword) * 100
+proportion
+
+
+
+```
+
+
+
+## Problem 1b
+
+
+```{r}
+## write answer here
+
+book_list <- unique(book_words$book)
+proportion_list <- vector("double", length(book_list))
+
+for(i in seq_along(book_list)) {
+  
+  one_book <- book_words |> filter(book == book_list[i])
+  
+  allword <- dim(one_book)[1]
+  bigword <- one_book |>  filter(str_length(word) >= 10) 
+  bigwordnum <- dim(bigword)[1]
+  
+  
+  proportion_list[i] <- (bigwordnum / allword) * 100
+}
+
+plot_df <- data.frame(
+  publish = c(1811, 1813, 1814, 1815, 1818, 1818),
+  proportion = proportion_list
+)
+
+ggplot(plot_df, aes(x = publish, y = proportion)) +
+  geom_point()
+
+
+```
+
+
+## Problem 1c
+
+
+
+```{r}
+## write answer here
+
+book_words |>
+  filter(str_detect(word, "^[wxyz].{5}e$")) |>
+  distinct(word)
+
+
+
+
+```
+
+
+

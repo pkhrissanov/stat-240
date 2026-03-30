@@ -1,56 +1,180 @@
 ---
 title: "Stat 240 Midterm"
 subtitle: "February 2026"
-author: "Your Name and Student Number Here"
+author: "Peter Khrissanov 301611434"
 format: html
 date: now
 ---
+
+```{r}
+download.file("https://owenward.github.io/files/nhl_data.tsv", "nhl_data.tsv")
+read.csv("nhl_data.tsv", sep = "\t")
+```
 
 
 ```{r}
 library(RSQLite)
 library(DBI)
+library(tidyverse)
 ```
 
 
+
 ## Problem 1
+#a
 
 ```{r}
 ## write code here
+data <- read.csv("nhl_data.tsv", sep = "\t")
+nhl_sub <- data |> filter(W > 50)
+nhl_sub
+print(dim(nhl_sub)[1])
+
+
+```
+
+## Problem 1
+#b
+```{r}
+
+nhl_mod <- select(nhl_sub, -GF, -GA, -DIFF)
+nhl_mod
+
+
+
+```
+
+## Problem 1
+#c
+```{r}
+write.table(nhl_mod, file = "nhl.psv", sep="._.")
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+## Problem 2
+#a
+
+```{r}
+## write code here
+
+db <- dbConnect(SQLite(), "nhl_data.sqlite")
+data <- read.csv("nhl_data.tsv", sep = "\t")
+
+dbWriteTable(db, "NHL", data, overwrite = TRUE)
+
+
+
 ```
 
 
 ## Problem 2
-
+#b
 
 ```{r}
 ## write code here
+object <- dbGetQuery(db, "SELECT * FROM NHL WHERE W > 50")
+object
+size <- print(dim(object)[1])
+size
+
+
+
 ```
+
+
+
+
+##Problem 2
+#c
+```{r}
+dbGetQuery(db,
+           "SELECT CONF,
+          COUNT(*) AS n,
+          AVG(w) AS avg_wins
+   FROM NHL
+   GROUP BY CONF"
+)
+```
+
+
+
+
+
 
 
 
 ## Problem 3 (Delete if not used)
-
+a
 
 ```{r}
 ## write code here
+x <- data$W
+y <- data$PTS
+
+plot(x, y)
+
+
 ```
 
 
 
-## Problem 4 (Delete if not used)
-
-
+b
 
 ```{r}
 ## write code here
+
+model <- lm(y ~ x)
+alpha <- summary(model)$coefficients[1, 1]
+beta <- summary(model)$coefficients[2, 1]
+print("alpha:")
+alpha
+print("beta:")
+beta
+
+
+x <- data$W
+y <- data$PTS
+
+plot(x, y)
+abline(a= alpha, b = beta)
+
+
+
 ```
 
 
-## Problem 5 (Delete if not used)
+## c
 
 
 ```{r}
 ## write code here
+
+SSE <- function(alpha, beta, x, y) {
+  alpha <- alpha
+  beta <- beta
+  f_x <- alpha + beta * x
+  SSE <- sum((y - f_x)^2)
+  SSE
+}
+
+print(SSE(alpha, beta, x, y))
+print(SSE(0, 0, x, y))
+
+
+
 ```
 

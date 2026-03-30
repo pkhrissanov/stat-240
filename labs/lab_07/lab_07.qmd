@@ -1,0 +1,114 @@
+---
+title: "Lab 07"
+subtitle: "Due March 17, 5:00 PM PST"
+author: "Peter Khrissanov 301611434"
+format: html
+---
+
+
+# Problem 1a
+
+
+```{r}
+## write your answer here
+my_dist <- function(data, centroids){
+  n_data <- nrow(data)
+  k<- nrow(centroids)
+  dist_mat <- matrix(NA, nrow = n_data, ncol = K)
+  for(i in 1:n_data){
+    for (k in 1:K){
+      dist_mat[i,k] <- dist(rbind(data[i,], centroids[k, ]))
+      
+    }
+  }
+  dist_mat
+  }
+
+
+```
+
+
+
+## Problem 1b
+
+
+```{r}
+## write answer here
+my_dist <- function(x, y) {
+  sqrt(sum((x - y)^2))
+}
+
+my_kmeans <- function(data, k, max_iter = 100, threshold = 1e-6) {
+  data <- as.matrix(data)
+  
+  n <- nrow(data)
+  d <- ncol(data)
+  
+
+  init_idx <- sample(1:n, k)
+  centroids <- data[init_idx, , drop = FALSE]
+  
+
+  clusters <- rep(NA, n)
+  
+  for (iter in 1:max_iter) {
+    old_centroids <- centroids
+    
+    for (i in 1:n) {
+      distances <- rep(NA, k)
+      for (j in 1:k) {
+        distances[j] <- my_dist(data[i, ], centroids[j, ])
+      }
+      clusters[i] <- which.min(distances)
+    }
+    
+
+    for (j in 1:k) {
+      cluster_points <- data[clusters == j, , drop = FALSE]
+      
+      if (nrow(cluster_points) > 0) {
+        centroids[j, ] <- colMeans(cluster_points)
+      }
+    }
+    
+
+    centroid_shifts <- rep(NA, k)
+    for (j in 1:k) {
+      centroid_shifts[j] <- my_dist(old_centroids[j, ], centroids[j, ])
+    }
+    
+    if (all(centroid_shifts < threshold)) {
+      break
+    }
+  }
+  
+  return(list(
+    centroids = centroids,
+    clusters = clusters
+  ))
+}
+```
+
+my_kmeans(data, k, max_iter = 100, threshold = 1e-6) performs k-means clustering on a dataset of arbitrary dimension, where data is a numeric matrix or data frame with observations in rows and variables in columns, k is the number of clusters, max_iter is the maximum number of iterations allowed before the algorithm stops, and threshold is the convergence cutoff such that the algorithm stops when all Euclidean distances between old and updated centroids are smaller than this value. The function returns a list with two components: centroids, a matrix containing the final cluster centers, and clusters, a vector giving the cluster assignment of each observation from the last iteration.
+
+## Problem 1c
+
+
+
+```{r}
+## write answer here
+set.seed(123)
+peng_scaled <- read.csv("peng_scaled.csv")
+
+my_fit <- my_kmeans(peng_scaled, k = 3, max_iter = 100, threshold = 0.001)
+
+set.seed(123)
+base_fit <- kmeans(peng_scaled, centers = 3, iter.max = 100)
+
+my_fit$clusters
+base_fit$cluster
+
+```
+
+
+

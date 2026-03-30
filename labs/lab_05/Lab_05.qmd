@@ -1,0 +1,75 @@
+---
+title: "Lab 05"
+subtitle: "Due March 3, 5:00 PM PST"
+author: "Peter Khrissanov 301611434"
+format: html
+---
+
+
+# Problem 1a
+
+```{r}
+## write your answer here
+knitr::opts_knit$set(root.dir = "/home/stabby/stat-240/RWorkspace/stat240/labs/lab_05")
+library(tidyverse)
+ebird <- read.csv("ebird30.csv")
+names <- read.csv("names.csv")
+
+source("canada.R")
+one_region <- which(apply(ebird[, 2:14], 1 , function(x) sum(x > 0 )) == 1)
+
+ebird[one_region[1], ]
+ebird[one_region[2], ]
+one_name <- names[one_region[1], ]
+comm_name <- one_name$Common.Name
+heat <- list()
+
+for(i in 1:13 ){
+  heat[[colnames(ebird)[i+1]]] = ebird[one_region[1], colnames(ebird)[i+1]]
+}
+canada(title = comm_name, heat = heat)
+
+
+
+
+
+
+
+
+```
+
+## Problem 1b
+
+```{r}
+## write answer here
+
+row_sum <- numeric(nrow(ebird))
+
+for (i in 1:nrow(ebird)) {
+  for (j in 2:ncol(ebird)) {
+    row_sum[i] <- row_sum[i] + ebird[i, j]
+  }
+}
+output <- data.frame(Common_Name = names$Common.Name, Scientific_Name = names$Scientific.Name, Sum = row_sum)
+
+finalb <- output |> arrange(desc(Sum))
+head(finalb, n= 1)
+
+
+
+
+
+```
+
+## Problem 1c
+
+```{r}
+## write answer here
+
+newFin <- finalb |> filter(Sum != 0) |> arrange(Sum)
+minimum <- min(newFin$Sum)
+minName <- newFin |> filter(Sum == minimum)
+finName <- sort(c(minName$Common_Name))
+head(finName, n= 10)
+
+```

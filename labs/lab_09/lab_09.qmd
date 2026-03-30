@@ -1,0 +1,44 @@
+---
+title: "Lab 09"
+subtitle: "Due March 31, 5:00 PM PST"
+author: "Your Name and Student ID Number"
+format: html
+---
+
+
+Modify this template file to create your submission.
+
+## Problem 1a
+
+
+```{r}
+## write your answer here
+```
+
+
+## Problem 1b
+
+
+```{r}
+## write answer here
+```
+
+
+## Problem 2a
+
+
+
+```{r}
+## write answer here
+
+```
+
+
+## Problem 2b
+
+```{r}
+## write answer here
+
+```
+
+etc
