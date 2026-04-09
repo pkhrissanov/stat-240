@@ -1,18 +1,26 @@
 ---
 title: "Lab 09"
 subtitle: "Due March 31, 5:00 PM PST"
-author: "Your Name and Student ID Number"
+author: "Peter Khrissanov"
 format: html
 ---
 
 
-Modify this template file to create your submission.
 
 ## Problem 1a
 
 
 ```{r}
 ## write your answer here
+library(tidyverse)
+data(iris)
+iris_data <- iris[, c(1, 2)]
+
+
+iris_kmeans <- kmeans(iris_data, 3, 100, 10)
+iris_kmeans
+
+
 ```
 
 
@@ -21,6 +29,11 @@ Modify this template file to create your submission.
 
 ```{r}
 ## write answer here
+
+iris_data <- iris_data |> mutate(cluster = iris_kmeans$cluster)
+
+ggplot(iris_data, aes(x = Sepal.Length, y = Sepal.Width, color = cluster)) + geom_point()
+
 ```
 
 
@@ -29,7 +42,14 @@ Modify this template file to create your submission.
 
 
 ```{r}
-## write answer here
+## write answer her
+
+library(stringr)
+small_sentences <- sentences[1:10]
+words_vector <- unlist(str_split(small_sentences, "\\s+"))[1:20]
+words_vector
+
+str_extract(words_vector, "^[A-Za-z]{4}$")
 
 ```
 
@@ -39,6 +59,91 @@ Modify this template file to create your submission.
 ```{r}
 ## write answer here
 
+str_subset(words_vector, "^[bc]")
 ```
 
-etc
+
+# Problem 2c
+
+```{r}
+str_subset(words_vector, "[^A-Za-z]")
+```
+
+
+## Problem 3a
+
+```{r}
+pois_llh <- function(theta, n, x){
+  -n*theta + log(theta) * sum(x)
+  
+}
+
+pois_llh(1, 5, c(1,2,3,4,5))
+
+
+```
+
+## Problem 3b
+```{r}
+theta_vals <- seq(from = 0.1, to = 8, length.out = 100)
+
+loghood_vals <- vector("double", length(theta_vals))
+
+for (i in seq_along(theta_vals)) {
+  loghood_vals[i] <- pois_llh(theta_vals[i], 5, c(1,2,3,4,5))
+}
+
+ggplot(tibble(x = theta_vals, y = loghood_vals), aes(x = x, y = y)) +
+  geom_line()
+```
+I estimate about 2.8 to be the max. 
+
+## Problem 4
+```{r}
+set.seed(100)
+prop_train <- 0.7
+prop_test <- 1 - prop_train
+ad_data <- read.csv("ad_data.csv")
+n_data <- nrow(ad_data)
+train_test <- sample(c("Train", "Test"),
+size = n_data, replace = TRUE,
+prob = c(prop_train, prop_test))
+training_data <- ad_data[train_test == "Train", ]
+testing_data <- ad_data[train_test == "Test", ]
+
+```
+
+
+
+# Problem 4a
+```{r}
+library(class)
+
+fit_knn <- knn(
+  train = training_data["EstimatedSalary"],
+  test = testing_data["EstimatedSalary"],
+  cl = training_data$Purchased,
+  k = 5
+)
+
+
+```
+
+## Problem 4b
+
+```{r}
+mean(fit_knn == testing_data$Purchased)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
